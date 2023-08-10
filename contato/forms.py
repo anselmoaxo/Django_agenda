@@ -8,11 +8,10 @@ class ContatoForm(forms.ModelForm):
     class Meta:
         model = models.Contato
         fields = ('first_name', 'last_name', 'phone', 'email',
-
-                  )
-    def clean(self):
+                  'description', 'category')
+    #def clean(self):
         #cleaned_data = self.cleaned_data
-        self.add_error('first_name',
-                       ValidationError("Mensagem de erro",
-                                       code='Invalid'))
-        return super().clean()
+        #self.add_error('first_name',
+                       #ValidationError("Mensagem de erro",
+                                       #code='Invalid'))
+        #return super().clean()

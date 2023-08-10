@@ -1,12 +1,18 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from contato.forms import ContatoForm
 
 
 def create(request):
     if request.method == 'POST':
+        form = ContatoForm(request.POST)
         contexto = {
-            'form': ContatoForm(request.POST)
+
+            'form': form
         }
+        if form.is_valid():
+            form.save()
+            return redirect('contato:create')
+
         return render(request,
                       'contato/create.html', contexto
                       )

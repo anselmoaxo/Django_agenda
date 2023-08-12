@@ -44,6 +44,7 @@ def consulta(request):
                   'contato/index.html', contexto
                   )
 
+
 def contato_detalhe(request, contato_id):
     #contato_unico = Contato.objects.filter(pk=contato_id).first
     #Caso não existir dados retorna 404

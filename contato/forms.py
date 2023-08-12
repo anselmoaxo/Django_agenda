@@ -4,14 +4,19 @@ from . import models
 
 
 class ContatoForm(forms.ModelForm):
+    picture = forms.ImageField(
+        widget=forms.FileInput(
+            attrs={
+                'accept' : 'image/*',
+            }
+        )
+    )
 
     class Meta:
         model = models.Contato
         fields = ('first_name', 'last_name', 'phone', 'email',
-                  'description', 'category')
-    #def clean(self):
-        #cleaned_data = self.cleaned_data
-        #self.add_error('first_name',
-                       #ValidationError("Mensagem de erro",
-                                       #code='Invalid'))
-        #return super().clean()
+                  'description', 'category', 'picture',
+                  )
+
+    def clean(self):
+        cleaned_data = self.cleaned_data

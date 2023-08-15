@@ -13,6 +13,7 @@ class Category(models.Model):
     def __str__(self):
         return f' {self.name}'
 
+
 class Contato (models.Model):
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50, blank=True)
@@ -21,7 +22,7 @@ class Contato (models.Model):
     create_date = models.DateTimeField(default = timezone.now)
     description = models.TextField(blank=True)
     show = models.BooleanField(default=True)
-    picture = models.ImageField(blank=True, upload_to = 'pictures/%Y/%m/')
+    picture = models.ImageField(upload_to = 'pictures/%Y/%m/')
     category = models.ForeignKey(
         Category, on_delete=models.SET_NULL, blank=True, null=True
     )

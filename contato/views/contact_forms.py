@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from contato.forms import ContatoForm
 from django.urls import reverse
 from contato.models import Contato
+from django.contrib.auth.decorators import login_required
 
 
 def create(request):
@@ -17,8 +18,10 @@ def create(request):
 
         # Se o formulário for válido, salve o contato e redirecione para a visualização de atualização.
         if form.is_valid():
-            contato = form.save()
-            return redirect("contato:update", contato_id=contato.pk)
+            contact = form.save(commit=False)
+            contact.owner = request.user
+            contact.save()
+            return redirect("contato:update", contato_id=contact.pk)
 
         # Caso contrário, re-renderize o formulário com erros.
         contexto = {
@@ -37,8 +40,11 @@ def create(request):
     return render(request, "contato/create.html", contexto)
 
 
+
+@login_required(login_url='contato:login')
 def update(request, contato_id):
-    contato = get_object_or_404(Contato, pk=contato_id, show=True)
+    contato = get_object_or_404(Contato, pk=contato_id, show=True,
+                                owner=request.user)
     form_action = reverse("contato:update", args=(contato_id,))
 
     # Se o método de requisição for POST, então processe os dados do formulário.
@@ -69,7 +75,8 @@ def update(request, contato_id):
 
 
 def delete(request, contato_id):
-    contact = get_object_or_404(Contato, pk=contato_id, show=True)
+    contact = get_object_or_404(Contato, pk=contato_id, show=True,
+                                owner=request.user)
     confirmation = request.POST.get("confirmation", "no")
 
     if confirmation == "yes":

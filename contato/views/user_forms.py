@@ -19,7 +19,8 @@ def register(request):
 
     return render(request, "contato/register.html", {"form": form})
 
-@login_required(login_url='contato: login')
+
+@login_required(login_url='contato:login')
 def user_update(request):
     form = RegisterUpdateForm(instance=request.user)
 
@@ -37,7 +38,7 @@ def user_update(request):
     if not form.is_valid():
         return render(
             request,
-            'coontato/user_update.html',
+            'contato/user_update.html',
             {
                 'form': form
             }
@@ -45,8 +46,6 @@ def user_update(request):
 
     form.save()
     return redirect('contato:user_update')
-
-
 
 
 def login_view(request):
